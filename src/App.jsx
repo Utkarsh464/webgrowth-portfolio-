@@ -12,15 +12,40 @@ function ScrollReset() {
   return null;
 }
 
-/* ── Protected wrapper — shows login if not authenticated ── */
 function ProtectedAdmin() {
-  const [authed, setAuthed] = useState(() => isAuthenticated());
+  // Re-check every render — never trust stale state
+  const [authed, setAuthed] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    // Run auth check only on client, never skip it
+    const ok = isAuthenticated();
+    setAuthed(ok);
+    setChecked(true);
+  }, []);
+
+  // Don't render anything until we've checked — prevents flash
+  if (!checked) return null;
 
   if (!authed) {
-    return <AdminLogin onSuccess={() => setAuthed(true)} />;
+    return (
+      <AdminLogin
+        onSuccess={() => {
+          // Re-verify the session was actually saved before allowing access
+          if (isAuthenticated()) setAuthed(true);
+        }}
+      />
+    );
   }
 
-  return <Admin onLogout={() => { clearAuthenticated(); setAuthed(false); }} />;
+  return (
+    <Admin
+      onLogout={() => {
+        clearAuthenticated();
+        setAuthed(false);
+      }}
+    />
+  );
 }
 
 export default function App() {
