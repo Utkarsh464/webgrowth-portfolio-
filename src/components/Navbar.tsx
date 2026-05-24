@@ -45,8 +45,8 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button onClick={() => setOpen(true)} className="md:hidden w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
-          <Menu className="w-5 h-5 text-white" />
+        <button onClick={() => setOpen(true)} className="md:hidden w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+          <Menu className="w-5 h-5 text-white/70" />
         </button>
       </div>
 
@@ -57,33 +57,55 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-50 flex flex-col items-center justify-center gap-10"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
           >
-            <button onClick={() => setOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
-              <X className="w-5 h-5 text-white" />
+            {/* Background with liquid-glass feel */}
+            <div className="absolute inset-0 bg-black" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,146,42,0.06)_0%,transparent_60%)]" />
+            <div className="absolute inset-0" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }} />
+
+            {/* Gradient border bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
+            <button onClick={() => setOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors z-10">
+              <X className="w-5 h-5 text-white/70" />
             </button>
-            {links.map(([href, label], i) => (
-              <motion.button
-                key={href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                onClick={() => handleClick(href)}
-                className="text-2xl font-semibold tracking-tight text-white/80 hover:text-gold transition-colors"
-              >
-                {label}
-              </motion.button>
-            ))}
+
+            {/* Logo at top */}
+            <div className="absolute top-6 left-6 z-10 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-sm text-white">W</div>
+              <span className="font-semibold text-base tracking-tight text-white">
+                Web<span className="text-gold">Growth</span>
+              </span>
+            </div>
+
+            {/* Nav links */}
+            <div className="relative z-10 flex flex-col items-center gap-6">
+              {links.map(([href, label], i) => (
+                <motion.button
+                  key={href}
+                  initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{ delay: i * 0.08, duration: 0.5 }}
+                  onClick={() => handleClick(href)}
+                  className="group relative text-3xl font-semibold tracking-tight text-white/80 hover:text-gold transition-colors"
+                >
+                  <span className="relative z-10">{label}</span>
+                  <span className="absolute -inset-x-4 -inset-y-2 rounded-xl bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </motion.button>
+              ))}
+            </div>
+
             <motion.a
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
               href={IG_DM}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-2 bg-gold text-black text-sm font-medium px-6 py-3 rounded-lg"
+              className="relative z-10 mt-10 inline-flex items-center gap-2.5 bg-white text-black text-sm font-medium px-7 py-3.5 rounded-xl hover:bg-white/90 transition-all hover:scale-105 active:scale-95"
             >
               <Instagram className="w-4 h-4" /> Get a Quote
             </motion.a>
