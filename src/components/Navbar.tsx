@@ -50,66 +50,81 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu overlay */}
+      {/* Side drawer */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-          >
-            {/* Background with liquid-glass feel */}
-            <div className="absolute inset-0 bg-black" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,146,42,0.06)_0%,transparent_60%)]" />
-            <div className="absolute inset-0" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }} />
-
-            {/* Gradient border bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-
-            <button onClick={() => setOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors z-10">
-              <X className="w-5 h-5 text-white/70" />
-            </button>
-
-            {/* Logo at top */}
-            <div className="absolute top-6 left-6 z-10 flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-sm text-white">W</div>
-              <span className="font-semibold text-base tracking-tight text-white">
-                Web<span className="text-gold">Growth</span>
-              </span>
-            </div>
-
-            {/* Nav links */}
-            <div className="relative z-10 flex flex-col items-center gap-6">
-              {links.map(([href, label], i) => (
-                <motion.button
-                  key={href}
-                  initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  transition={{ delay: i * 0.08, duration: 0.5 }}
-                  onClick={() => handleClick(href)}
-                  className="group relative text-3xl font-semibold tracking-tight text-white/80 hover:text-gold transition-colors"
-                >
-                  <span className="relative z-10">{label}</span>
-                  <span className="absolute -inset-x-4 -inset-y-2 rounded-xl bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.button>
-              ))}
-            </div>
-
-            <motion.a
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              href={IG_DM}
-              target="_blank"
-              rel="noopener noreferrer"
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="relative z-10 mt-10 inline-flex items-center gap-2.5 bg-white text-black text-sm font-medium px-7 py-3.5 rounded-xl hover:bg-white/90 transition-all hover:scale-105 active:scale-95"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Drawer panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-[280px] sm:w-[320px] flex flex-col"
             >
-              <Instagram className="w-4 h-4" /> Get a Quote
-            </motion.a>
-          </motion.div>
+              <div className="absolute inset-0 bg-[#0c0c0c]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,146,42,0.04)_0%,transparent_60%)]" />
+              <div className="absolute inset-0 border-l border-white/10" />
+              <div className="absolute inset-0" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }} />
+
+              {/* Close + logo row */}
+              <div className="relative z-10 flex items-center justify-between px-6 h-16 border-b border-white/5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center font-bold text-xs text-white">W</div>
+                  <span className="font-semibold text-sm tracking-tight text-white">
+                    Web<span className="text-gold">Growth</span>
+                  </span>
+                </div>
+                <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <X className="w-4 h-4 text-white/60" />
+                </button>
+              </div>
+
+              {/* Nav links */}
+              <div className="relative z-10 flex-1 flex flex-col justify-center px-6 gap-1">
+                {links.map(([href, label], i) => (
+                  <motion.button
+                    key={href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.06 }}
+                    onClick={() => handleClick(href)}
+                    className="group flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-lg font-semibold tracking-tight text-white/70 hover:text-gold hover:bg-gold/5 transition-all"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-gold/30 group-hover:bg-gold transition-colors" />
+                    {label}
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Bottom CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="relative z-10 px-6 pb-8"
+              >
+                <a
+                  href={IG_DM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2.5 w-full bg-white text-black text-sm font-medium px-5 py-3.5 rounded-xl hover:bg-white/90 transition-all active:scale-[0.98]"
+                >
+                  <Instagram className="w-4 h-4" /> Get a Quote
+                </a>
+              </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
