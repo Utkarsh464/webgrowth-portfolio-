@@ -1,5 +1,6 @@
-import { motion } from 'motion/react'
-import { Menu, Instagram } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { Menu, X, Instagram } from 'lucide-react'
 
 const links = [
   ['#work', 'Work'],
@@ -10,6 +11,14 @@ const links = [
 const IG_DM = 'https://ig.me/m/webgrowth.in'
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false)
+
+  function handleClick(href: string) {
+    setOpen(false)
+    const el = document.querySelector(href)
+    el?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <motion.nav
       initial={{ opacity: 0, y: -10 }}
@@ -36,10 +45,51 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button className="md:hidden w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
+        <button onClick={() => setOpen(true)} className="md:hidden w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
           <Menu className="w-5 h-5 text-white" />
         </button>
       </div>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-50 flex flex-col items-center justify-center gap-10"
+          >
+            <button onClick={() => setOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
+              <X className="w-5 h-5 text-white" />
+            </button>
+            {links.map(([href, label], i) => (
+              <motion.button
+                key={href}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                onClick={() => handleClick(href)}
+                className="text-2xl font-semibold tracking-tight text-white/80 hover:text-gold transition-colors"
+              >
+                {label}
+              </motion.button>
+            ))}
+            <motion.a
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              href={IG_DM}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center gap-2 bg-gold text-black text-sm font-medium px-6 py-3 rounded-lg"
+            >
+              <Instagram className="w-4 h-4" /> Get a Quote
+            </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }
