@@ -65,7 +65,7 @@ export const SEED = [
     tech: ['React', 'Vite', 'Framer Motion', 'Tailwind CSS'],
     category: 'Website',
     image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=85',
-    link: 'https://library-q8ot-git-main-utkarsh464s-projects.vercel.app/',
+    link: 'https://library-q8ot.vercel.app/',
     featured: true,
     color: '#0d1b2a',
     accent: '#d4a373',
