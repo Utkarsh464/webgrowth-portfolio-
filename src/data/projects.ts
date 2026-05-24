@@ -57,4 +57,18 @@ export const SEED = [
     accent: '#fbbf24',
     sort_order: 3,
   },
+  {
+    id: 'p5',
+    title: 'The Reading Room',
+    subtitle: 'Community Library',
+    description: 'A digital home for a community library — browse the catalogue, discover programs, and connect with local readers. Built with a warm, editorial feel.',
+    tech: ['React', 'Vite', 'Framer Motion', 'Tailwind CSS'],
+    category: 'Website',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=85',
+    link: 'https://library-q8ot-git-main-utkarsh464s-projects.vercel.app/',
+    featured: true,
+    color: '#0d1b2a',
+    accent: '#d4a373',
+    sort_order: 4,
+  },
 ];
